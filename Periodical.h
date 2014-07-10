@@ -36,6 +36,8 @@ public:
     Date getReturnedDate() const {return returnedDate;}
     string getName() const {return name;}
     int getBarcode() const {return barcode;}
+
+	void generateEmpQueue();
     
 private:
 	priority_queue<Employee> empQueue;

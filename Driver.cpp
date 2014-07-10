@@ -3,6 +3,6 @@
 int main()
 {
 	Library myLib;
-	myLib.ReadFromFile();
+	myLib.ReadPeriodicalsFromFile();
     return 0;
 }

@@ -15,7 +15,7 @@ void Library::ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2)
 
 }
 
-void Library::ReadFromFile()
+void Library::ReadPeriodicalsFromFile()
 {
 	
 	ifstream fin("periodicals.txt");
@@ -38,3 +38,4 @@ void Library::ArchivePeriodical(Periodical& p)
 {
 
 }
+
