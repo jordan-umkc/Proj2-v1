@@ -21,21 +21,17 @@ void Library::ReadFromFile()
 	ifstream fin("periodicals.txt");
 	if (fin)
 	{
-		Periodical temp; // still need to fix this
-		
-		string line;
-		string aName;
-		string aBarCode;
+		string line, aName;
+		int aBarCode;
 		
 		while (getline(fin, line))
 		{
 			String_Tokenizer st(line, ",");
-			aName = trim("Hello world");
+			aName = trim(st.next_token());
 			aBarCode = stoi(trim(st.next_token()));
+			circulatingPeriodicals[aBarCode] = Periodical(aName,aBarCode);
 		}
-		
 	}
-	
 }
 
 void Library::ArchivePeriodical(Periodical& p)
