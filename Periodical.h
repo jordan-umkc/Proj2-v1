@@ -13,18 +13,15 @@ class Periodical {
     //default constructor
     Periodical() : isCheckedOut(), name(""), barcode(), checkedOutDate(), returnedDate(), maxCheckoutDuration(7) {}
 
+	Periodical(string aName, int aBarCode) 
+		: isCheckedOut(), name(aName), barcode(aBarCode), checkedOutDate(), returnedDate(), maxCheckoutDuration() {}
+
     //full-argument constructor
-    Periodical(bool checkedOut, std::string aName, int aBarcode, Date theOutDate, Date theReturnDate, int theMaxDur) {
-        isCheckedOut = checkedOut;
-        name = aName;
-        barcode = aBarcode;
-        checkedOutDate = theOutDate;
-        returnedDate = theReturnDate;
-        maxCheckoutDuration = theMaxDur;
-    }
+	Periodical(bool checkedOut, std::string aName, int aBarcode, Date theOutDate, Date theReturnDate, int theMaxDur)
+		: isCheckedOut(checkedOut), name(aName), barcode(aBarcode), checkedOutDate(theOutDate), returnedDate(theReturnDate), maxCheckoutDuration(theMaxDur) {}
 
     //destructor
-    ~Periodical();
+   // ~Periodical();
 
     //copy constructor
     Periodical(const Periodical& p) : isCheckedOut(p.isCheckedOut), name(p.name), barcode(p.barcode), checkedOutDate(p.checkedOutDate),

@@ -11,8 +11,10 @@ class Library {
 public:
     void ReturnToLibrary(Periodical& p, Employee& e);
     void ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2);
-    void ReadFromFile(ifstream& in);
+    void ReadFromFile();
     void ArchivePeriodical(Periodical& p);
+	string trim(const string& the_string);
+
 private:
     map<int,Periodical> archivedPeriodicals;
     map<int,Periodical> circulatingPeriodicals;
