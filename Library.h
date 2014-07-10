@@ -13,7 +13,7 @@ public:
     void ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2);
     void ReadFromFile();
     void ArchivePeriodical(Periodical& p);
-	string trim(const string& the_string);
+	string trim(string);
 
 private:
     map<int,Periodical> archivedPeriodicals;
