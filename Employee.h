@@ -21,9 +21,6 @@ public:
         priority(aPriority), reliability(aReliability), empname(aName), vacationStart(aVacStart),
         vacationEnd(aVacEnd), waiting_time(aWaitTime) {}
 
-    //destructor
-    ~Employee();
-
     //copy constructor
     Employee(const Employee& e) : priority(e.priority), reliability(e.reliability), empname(e.empname), 
         vacationStart(e.vacationStart), vacationEnd(e.vacationEnd), waiting_time(e.waiting_time) {}

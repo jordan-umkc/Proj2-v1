@@ -10,8 +10,9 @@ Periodical class header
 
 
 class Periodical {
+public:
     //default constructor
-    Periodical() : isCheckedOut(), name(""), barcode(), checkedOutDate(), returnedDate(), maxCheckoutDuration(7) {}
+    Periodical() : isCheckedOut(true), name(""), barcode(0), checkedOutDate(Date()), returnedDate(Date()), maxCheckoutDuration(7) {}
 
 	Periodical(string aName, int aBarCode) 
 		: isCheckedOut(), name(aName), barcode(aBarCode), checkedOutDate(), returnedDate(), maxCheckoutDuration() {}

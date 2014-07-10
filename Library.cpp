@@ -11,13 +11,13 @@ void Library::ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2)
 {
 
 }
-
+/*
 void Library::ReadFromFile()
 {
 	ifstream fin("periodicals.txt");
 	if (fin)
 	{
-		Periodical temp; // stiil need to fix this
+		Periodical temp; // still need to fix this
 		string line;
 		string aName;
 		string aBarCode;
@@ -25,11 +25,11 @@ void Library::ReadFromFile()
 		{
 			String_Tokenizer st(line, ",");
 			aName = trim(st.next_token());
-			aBarCode = stoi(trim(st.next_token(aBarCode)))// and this
+			aBarCode = stoi(trim(st.next_token()));// and this
 		}
 	}
 }
-
+*/
 /** Function to remove the leading and trailing spaces from a string */
 string trim(const string& the_string)
 {
