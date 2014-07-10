@@ -5,6 +5,7 @@ Library class header
 #ifndef __LIBRARY_H__
 #define __LIBRARY_H__
 #include "Periodical.h"
+#include "Employee.h"
 #include <map>
 #include <vector>
 

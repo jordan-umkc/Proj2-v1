@@ -16,10 +16,21 @@ public:
     //default constructor
     Employee(): priority(), reliability(), empname(""), vacationStart(), vacationEnd(), waiting_time() {}
     
+	/*
     //full-argument constructor
     Employee(int aPriority, int aReliability, string aName, Date aVacStart, Date aVacEnd, int aWaitTime) :
         priority(aPriority), reliability(aReliability), empname(aName), vacationStart(aVacStart),
         vacationEnd(aVacEnd), waiting_time(aWaitTime) {}
+	*/
+
+	Employee(int aReliability, string aName, Date aVacStart, Date aVacEnd, int aWaitTime) :
+		reliability(aReliability), empname(aName), vacationStart(aVacStart), vacationEnd(aVacEnd), waiting_time(aWaitTime)
+	{
+		// It makes sense to do this instead of the full argument constructor because
+		// the priority is going to be determined by an algorithm that combines several different factors
+		int thePriority;
+		setPriority(thePriority);
+	}
 
     //copy constructor
     Employee(const Employee& e) : priority(e.priority), reliability(e.reliability), empname(e.empname), 
@@ -27,7 +38,11 @@ public:
 
 
     //setters
-    void setPriority(const int& p) {priority = p;}
+    void setPriority(const int& p) 
+	{
+		// the algorithm for determining the priority goes here
+		priority = p;
+	}
     void setReliability(const int& r) {reliability = r;}
     void setVacationStart(const Date& d) {vacationStart = d;}
     void setVacationEnd(const Date& d) {vacationEnd = d;}
@@ -54,7 +69,7 @@ private:
     Date vacationStart;
     Date vacationEnd;
     vector<int> BookListByID;
-    int waiting_time;
+    int waiting_time; // # of days
 };
 
 #endif
