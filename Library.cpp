@@ -1,7 +1,8 @@
-#include "Library.h"
-#include "StringTokenizer.h"
 #include <fstream>
 #include <string>
+#include "Library.h"
+#include "StringTokenizer.h"
+#include "HelperFunctions.h"
 using namespace std;
 
 void Library::ReturnToLibrary(Periodical& p, Employee& e)
@@ -35,15 +36,6 @@ void Library::ReadFromFile()
 		
 	}
 	
-}
-
-/** Function to remove the leading and trailing spaces from a string */
-string Library::trim(string the_string)
-{
-	size_t p = the_string.find_first_not_of(" ");
-	if (p == string::npos) return "";
-	size_t q = the_string.find_last_not_of(" ");
-	return the_string.substr(p, q - p + 1);
 }
 
 void Library::ArchivePeriodical(Periodical& p)

@@ -21,9 +21,6 @@ public:
 	Periodical(bool checkedOut, std::string aName, int aBarcode, Date theOutDate, Date theReturnDate, int theMaxDur)
 		: isCheckedOut(checkedOut), name(aName), barcode(aBarcode), checkedOutDate(theOutDate), returnedDate(theReturnDate), maxCheckoutDuration(theMaxDur) {}
 
-    //destructor
-   // ~Periodical();
-
     //copy constructor
     Periodical(const Periodical& p) : isCheckedOut(p.isCheckedOut), name(p.name), barcode(p.barcode), checkedOutDate(p.checkedOutDate),
         returnedDate(p.returnedDate), maxCheckoutDuration(p.maxCheckoutDuration) {}
@@ -40,9 +37,9 @@ public:
     string getName() const {return name;}
     int getBarcode() const {return barcode;}
     
-    priority_queue<Employee> empQueue;
 private:
-    string name;
+	priority_queue<Employee> empQueue;
+	string name;
     int barcode;
     bool isCheckedOut;
     Date checkedOutDate;
