@@ -15,6 +15,7 @@ public:
     void ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2);
     void ReadPeriodicalsFromFile();
 	void ReadEmployeesFromFile();
+	void buildPriorityQueues();
     void ArchivePeriodical(Periodical& p);
 
 private:
