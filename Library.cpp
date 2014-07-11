@@ -34,7 +34,7 @@ void Library::ReadPeriodicalsFromFile()
 	}
 }
 
-void ReadEmployeesFromFile()
+void Library::ReadEmployeesFromFile()
 {
 	ifstream fin("Employees.txt");
 	if (fin)
@@ -48,11 +48,9 @@ void ReadEmployeesFromFile()
 			aName = trim(st.next_token());
 			theReliability = stoi(trim(st.next_token()));
 			theWaitingTime = stoi(trim(st.next_token()));
-			//String_Tokenizer stDate(line, "/");
 			startVacation = trim(st.next_token());
 			endVacation = trim(st.next_token());
-			// put the employee into the vector
-			employees. // why isn't it able to see the employee vector?
+			employees[aName] = Employee(theReliability, aName, Date(startVacation), Date(endVacation), theWaitingTime); // why isn't it able to see the employee vector?
 		}
 	}
 }

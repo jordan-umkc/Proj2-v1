@@ -20,7 +20,7 @@ public:
 private:
     map<int,Periodical> archivedPeriodicals;
     map<int,Periodical> circulatingPeriodicals;
-	vector<Employee> employees;
+	map<string,Employee> employees;
 };
 
 #endif
