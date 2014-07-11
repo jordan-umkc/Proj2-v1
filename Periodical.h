@@ -12,42 +12,40 @@ Periodical class header
 class Periodical {
 public:
     //default constructor
-    Periodical() : isCheckedOut(true), name(""), checkedOutDate(Date()), returnedDate(Date()), maxCheckoutDuration(7) {}
-	/* these are the constructors that have a barCode variable
-	Periodical(string aName, int aBarCode) 
-		: isCheckedOut(), name(aName), barcode(aBarCode), checkedOutDate(), returnedDate(), maxCheckoutDuration() {}
+	Periodical() : isCheckedOut(false), name(""), barcode(), checkOutDate(Date()), returnDate(Date()), maxCheckoutDuration(7) {}
+	
+	//two-argument constructor
+	Periodical(string aName, int aBarCode)
+		: isCheckedOut(false), name(aName), barcode(aBarCode), checkOutDate(Date()), returnDate(Date()), maxCheckoutDuration(7) {}
 
     //full-argument constructor
 	Periodical(bool checkedOut, std::string aName, int aBarcode, Date theOutDate, Date theReturnDate, int theMaxDur)
-		: isCheckedOut(checkedOut), name(aName), barcode(aBarcode), checkedOutDate(theOutDate), returnedDate(theReturnDate), maxCheckoutDuration(theMaxDur) {}
+		: isCheckedOut(checkedOut), name(aName), barcode(aBarcode), checkOutDate(theOutDate), maxCheckoutDuration(theMaxDur)
+	{
+		setReturnDate();
+	}
 
     //copy constructor
-    Periodical(const Periodical& p) : isCheckedOut(p.isCheckedOut), name(p.name), barcode(p.barcode), checkedOutDate(p.checkedOutDate),
-        returnedDate(p.returnedDate), maxCheckoutDuration(p.maxCheckoutDuration) {}
-	*/
-
-	Periodical(string aName)
-		: isCheckedOut(), name(aName), checkedOutDate(), returnedDate(), maxCheckoutDuration() {}
-
-	//full-argument constructor
-	Periodical(bool checkedOut, std::string aName, Date theOutDate, Date theReturnDate, int theMaxDur)
-		: isCheckedOut(checkedOut), name(aName), checkedOutDate(theOutDate), returnedDate(theReturnDate), maxCheckoutDuration(theMaxDur) {}
-
-	//copy constructor
-	Periodical(const Periodical& p) : isCheckedOut(p.isCheckedOut), name(p.name), checkedOutDate(p.checkedOutDate),
-		returnedDate(p.returnedDate), maxCheckoutDuration(p.maxCheckoutDuration) {}
+    Periodical(const Periodical& p) : isCheckedOut(p.isCheckedOut), name(p.name), barcode(p.barcode), checkOutDate(p.checkOutDate),
+        returnDate(p.returnDate), maxCheckoutDuration(p.maxCheckoutDuration) {}
 
     //setters
     void setCheckedBool(bool isItChecked) {isCheckedOut = isItChecked;}
-    void setCheckedOutDate(Date& aDate) {checkedOutDate = aDate;}
-    void setReturnedDate(Date& aDate) {returnedDate = aDate;}
+    void setCheckOutDate(Date& aDate) {checkOutDate = aDate;}
+	void setReturnDate()
+	{
+		Date temp = checkOutDate;
+		temp.add_days(maxCheckoutDuration);
+		returnDate = checkOutDate;
+	}
     void setMaxCheckoutDur(int& dur) {maxCheckoutDuration = dur;}
 
     //getters
-    Date getCheckedOutDate() const {return checkedOutDate;}
-    Date getReturnedDate() const {return returnedDate;}
+    Date getCheckedOutDate() const {return checkOutDate;}
+    Date getReturnedDate() const {return returnDate;}
     string getName() const {return name;}
-    //int getBarcode() const {return barcode;}
+	bool getCheckOutStatus() { return isCheckedOut; }
+    int getBarcode() const {return barcode;}
 
 	void generateEmpQueue(map<string,Employee>&);
 
@@ -62,10 +60,10 @@ public:
 private:
 	priority_queue<Employee,vector<Employee>,EmployeeComparer> empQueue;
 	string name;
-    //int barcode; // it doesn't make sense to have barcode variable because its already taken care of with the maps in library.cpp
+    int barcode;
     bool isCheckedOut;
-    Date checkedOutDate;
-    Date returnedDate;
+    Date checkOutDate;
+    Date returnDate;
     int maxCheckoutDuration;
 };
 

@@ -14,7 +14,7 @@ using namespace std;
 class Employee {
 public:
     //default constructor
-    Employee(): reliability(), empname(), vacationStart(), vacationEnd(), waiting_time() {}
+    Employee(): reliability(), empname(), vacationStart(Date()), vacationEnd(Date()), waiting_time() {}
     
 	/*
     //full-argument constructor
@@ -23,8 +23,8 @@ public:
         vacationEnd(aVacEnd), waiting_time(aWaitTime) {}
 	*/
 
-	Employee(int aReliability, string aName, Date aVacStart, Date aVacEnd, int aWaitTime) :
-		reliability(aReliability), empname(aName), vacationStart(aVacStart), vacationEnd(aVacEnd), waiting_time(aWaitTime){}
+	Employee(int aReliability, string aName, Date aVacStart, Date aVacEnd, int aWaitTime) 
+		: reliability(aReliability), empname(aName), vacationStart(aVacStart), vacationEnd(aVacEnd), waiting_time(aWaitTime){}
 
     //copy constructor
     Employee(const Employee& e) : reliability(e.reliability), empname(e.empname), 

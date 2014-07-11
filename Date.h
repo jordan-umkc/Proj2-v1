@@ -219,6 +219,18 @@ public:
 		return this->operator>(other) || this->operator==(other);
 	}
 
+	Date& operator =(const Date &rhs)
+	{
+		if (*this == rhs)
+			return *this;
+
+		setYear(rhs.year);
+		setMonth(rhs.month);
+		setDay(rhs.day);
+
+		return *this;
+	}
+
 	int getYear() { return year; }
 	int getMonth() { return month; }
 	int getDay() { return day; }
