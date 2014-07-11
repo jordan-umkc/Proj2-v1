@@ -1,6 +1,8 @@
 #include "Periodical.h"
 
-void Periodical::generateEmpQueue()
+void Periodical::generateEmpQueue(map<string,Employee>& empMap)
 {
-	// do stuff
+	for (map<string, Employee>::iterator itr = empMap.begin(); itr != empMap.end(); itr++){
+
+	}
 }

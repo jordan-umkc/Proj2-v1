@@ -57,7 +57,7 @@ void Library::ReadEmployeesFromFile()
 
 void Library::buildPriorityQueues(){
 	for (map<int, Periodical>::iterator itr = circulatingPeriodicals.begin(); itr != circulatingPeriodicals.end(); itr++){
-		itr->second.generateEmpQueue();
+		itr->second.generateEmpQueue(employees);
 	}
 }
 

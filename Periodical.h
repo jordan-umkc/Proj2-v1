@@ -4,10 +4,10 @@ Periodical class header
 
 #ifndef __PERIODICAL_H__
 #define __PERIODICAL_H__
+#include <map>
+#include <queue>
 #include "Date.h"
 #include "Employee.h"
-#include <queue>
-
 
 class Periodical {
 public:
@@ -49,10 +49,18 @@ public:
     string getName() const {return name;}
     //int getBarcode() const {return barcode;}
 
-	void generateEmpQueue();
+	void generateEmpQueue(map<string,Employee>&);
+
+	struct EmployeeComparer{
+		bool operator()(const Employee& emp1, const Employee& emp2){
+			int emp1priority = emp1.getReliability() + emp1.getWaitingTime();
+			int emp2priority = emp2.getReliability() + emp2.getWaitingTime();
+			return emp1priority < emp2priority;
+		}
+	};
     
 private:
-	priority_queue<Employee> empQueue;
+	priority_queue<Employee,vector<Employee>,EmployeeComparer> empQueue;
 	string name;
     //int barcode; // it doesn't make sense to have barcode variable because its already taken care of with the maps in library.cpp
     bool isCheckedOut;
