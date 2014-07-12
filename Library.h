@@ -22,6 +22,7 @@ public:
 	void removeArchivedPeriodical(Periodical& p);
 	void CirculatePeriodical(Periodical& p);
 	void removeCirculatingPeriodical(Periodical& p);
+    void UpdateEmployeeReliability(Employee& e, Periodical& p, Date& currentDate);
 
 
 private:

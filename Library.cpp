@@ -9,7 +9,12 @@ void Library::ReturnToLibrary(Periodical& p, Employee& e, Date currentDate)
 {//Jordan
 	p.setCheckedBool(false);
 	e.removeBookFromList(p.getBarcode());
-	if (currentDate > p.getReturnDate())
+    UpdateEmployeeReliability(e, p, currentDate);
+}
+
+void Library::UpdateEmployeeReliability(Employee& e, Periodical& p, Date& currentDate)
+{//Jordan
+    if (currentDate > p.getReturnDate())
 	{
 		e.setReliability(e.getReliability() - ((currentDate - p.getReturnDate()) / 7));
 		if (e.getReliability() < 0) {
@@ -27,17 +32,31 @@ void Library::ReturnToLibrary(Periodical& p, Employee& e, Date currentDate)
 }
 
 void Library::checkoutPeriodical(Periodical& p, Employee& e, Date currentDate) // Evan
-{//Jordan finished
+{//Jordan converted to if/else queue handling
 	if (p.getCheckOutStatus() == true)
 		throw::exception("the periodical you want is currently checked out");
+    if (p.empQueue.empty())
+    {
+        return;
+    }
+    if (currentDate > e.getVacationEnd() && currentDate < e.getVacationStart())
+    {
+	    p.setCheckOutDate(currentDate);
+	    p.setReturnDate();
+	    p.setCheckedBool(true);
+	    e.addBookToList(p.getBarcode());
 
-	p.setCheckOutDate(currentDate);
-	p.setReturnDate();
-	p.setCheckedBool(true);
-	e.addBookToList(p.getBarcode());
-
-	removeArchivedPeriodical(p);
-	CirculatePeriodical(p);
+	    removeArchivedPeriodical(p);
+	    CirculatePeriodical(p);
+        p.empQueue.pop();
+        p.empQueue.push(e);
+    }
+    else
+    {
+        p.empQueue.pop();
+        p.empQueue.push(e);
+        checkoutPeriodical(p, p.empQueue.top(), currentDate);
+    }
 }
 
 void Library::ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2, Date currentDate)
@@ -46,6 +65,7 @@ void Library::ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2, Date
 	e2.addBookToList(p.getBarcode());
 	//remove e1 from periodical's employee queue
 	p.empQueue.pop();
+    UpdateEmployeeReliability(e1, p, currentDate);
 }
 
 void Library::ReadPeriodicalsFromFile()
