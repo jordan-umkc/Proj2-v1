@@ -11,24 +11,24 @@ Library class header
 
 class Library { //implemented by Jordan
 public:
-    void ReturnToLibrary(Periodical& p, Employee& e, Date currentDate);
+	void ReturnToLibrary(Periodical& p, Employee& e, Date currentDate);
 	void checkoutPeriodical(Periodical& p, Employee& e, Date currentDate);
 	void ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2, Date currentDate);
-    void ReadPeriodicalsFromFile();
+	void ReadPeriodicalsFromFile();
 	void ReadEmployeesFromFile();
-	Date ReadActionsFromFile();
+	void ReadActionsFromFile();
 	void buildPriorityQueues();
-    void ArchivePeriodical(Periodical& p);
+	void ArchivePeriodical(Periodical& p);
 	void removeArchivedPeriodical(Periodical& p);
 	void CirculatePeriodical(Periodical& p);
 	void removeCirculatingPeriodical(Periodical& p);
 
-	
+
 private:
-    map<int,Periodical> archivedPeriodicals;
-    map<int,Periodical> circulatingPeriodicals;
-	map<string,Employee> employees;
-    
+	map<int, Periodical> archivedPeriodicals;
+	map<int, Periodical> circulatingPeriodicals;
+	map<string, Employee> employees;
+
 
 };
 

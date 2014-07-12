@@ -7,23 +7,23 @@ using namespace std;
 
 void Library::ReturnToLibrary(Periodical& p, Employee& e, Date currentDate)
 {//Jordan
-    p.setCheckedBool(false);
-    e.removeBookFromList(p.getBarcode());
-    if (currentDate > p.getReturnDate())
-    {
-        e.setReliability(e.getReliability() - ((currentDate - p.getReturnDate())/7));
-        if (e.getReliability() < 0) {
-            e.setReliability(0); 
-        }
-    }
-    else
-    {
-        e.setReliability(e.getReliability()+1);
-        if (e.getReliability() > 10)
-        {
-            e.setReliability(10);
-        }
-    }
+	p.setCheckedBool(false);
+	e.removeBookFromList(p.getBarcode());
+	if (currentDate > p.getReturnDate())
+	{
+		e.setReliability(e.getReliability() - ((currentDate - p.getReturnDate()) / 7));
+		if (e.getReliability() < 0) {
+			e.setReliability(0);
+		}
+	}
+	else
+	{
+		e.setReliability(e.getReliability() + 1);
+		if (e.getReliability() > 10)
+		{
+			e.setReliability(10);
+		}
+	}
 }
 
 void Library::checkoutPeriodical(Periodical& p, Employee& e, Date currentDate) // Evan
@@ -42,21 +42,21 @@ void Library::checkoutPeriodical(Periodical& p, Employee& e, Date currentDate) /
 
 void Library::ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2, Date currentDate)
 {//Jordan
-    e1.removeBookFromList(p.getBarcode());
-    e2.addBookToList(p.getBarcode());
-    //remove e1 from periodical's employee queue
-    p.empQueue.pop();
+	e1.removeBookFromList(p.getBarcode());
+	e2.addBookToList(p.getBarcode());
+	//remove e1 from periodical's employee queue
+	p.empQueue.pop();
 }
 
 void Library::ReadPeriodicalsFromFile()
 {//Evan w/ Brenton debug
-	
+
 	ifstream fin("Periodicals.txt");
 	if (fin)
 	{
 		string line, aName;
 		int aBarCode;
-		
+
 
 		while (getline(fin, line))
 		{
@@ -76,7 +76,7 @@ void Library::ReadEmployeesFromFile()
 	{
 		string line, empName, startVacation, endVacation;
 		int theReliability, theWaitingTime;
-		
+
 		while (getline(fin, line))
 		{
 			String_Tokenizer st(line, ",");
@@ -92,29 +92,21 @@ void Library::ReadEmployeesFromFile()
 }
 // Returns Date of next batch of actions
 // if end of file has been reached return empty Date
-Date Library::ReadActionsFromFile() // Evan
+void Library::ReadActionsFromFile() // Evan
 {
 	ifstream fin("Actions.txt");
 	if (fin)
-	{ 
-		string line, empName1,  currentDate, test;
+	{
+		string line, empName1, currentDate;
 		int aBarcode, action;
 
-		while (getline(fin, line))
+		getline(fin, currentDate);
+
+		while (getline(fin, line) && !line.empty())
 		{
 			String_Tokenizer st(line, ",");
-			test = trim(st.next_token());
-			// determine if what was read in was a name or a date
-			if (test.find("/"))
-			{
-				currentDate = test;
-				getline(fin, line);
-				empName1 = trim(st.next_token());
-			}
-				
-			else
-				empName1 = test;
 
+			empName1 = trim(st.next_token());
 			action = stoi(trim(st.next_token()));
 			aBarcode = stoi(trim(st.next_token()));
 
@@ -139,11 +131,10 @@ Date Library::ReadActionsFromFile() // Evan
 			}
 		}
 	}
-	fin.close();
 }
 
 void Library::buildPriorityQueues(){
-    //Brenton
+	//Brenton
 	for (map<int, Periodical>::iterator itr = circulatingPeriodicals.begin(); itr != circulatingPeriodicals.end(); itr++){
 		itr->second.generateEmpQueue(employees);
 	}

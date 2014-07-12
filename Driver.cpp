@@ -7,13 +7,14 @@ int main()
 	Library myLib;
 	myLib.ReadPeriodicalsFromFile();
 	myLib.ReadEmployeesFromFile();
-
 	myLib.buildPriorityQueues();
 	
-	//myLib.ReadActionsFromFile();
+	myLib.ReadActionsFromFile();
 
 
 
+
+	/*
 	Date currentDate = Date("7/11/2014");
 
 	Date testDate = Date();
@@ -24,7 +25,7 @@ int main()
 		cout << "Empty TestDate Found" << endl;
 	}
 
-	/*
+	
 	Periodical pTest;
 
 	myLib.CirculatePeriodical(pTest);
