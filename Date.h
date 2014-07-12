@@ -21,15 +21,15 @@ class Date {
 
 public:
 
-	Date(DateFormat format = DateFormat::Standard) :format(format){}
+	Date(DateFormat format = DateFormat::US) :format(format){}
 
-	Date(string date,DateFormat format = DateFormat::Standard) :format(format){
+	Date(string date,DateFormat format = DateFormat::US) :format(format){
 		year = 1; month = 1; day = 1; 
 		*this=parseDate(date,format);
 	}
 
 
-	Date(int year, int month, int day, DateFormat format = DateFormat::Standard) : year(year), month(month), day(day), format(format){
+	Date(int year, int month, int day, DateFormat format = DateFormat::US) : year(year), month(month), day(day), format(format){
 		if (!valid_date(year, month, day))
 			throw std::exception(" The date is not valid");
 	}

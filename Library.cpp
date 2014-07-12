@@ -39,24 +39,30 @@ void Library::checkoutPeriodical(Periodical& p, Employee& e, Date currentDate) /
     {
         return;
     }
-    if (currentDate > e.getVacationEnd() && currentDate < e.getVacationStart())
+    if (currentDate > e.getVacationEnd() || currentDate < e.getVacationStart())
     {
 	    p.setCheckOutDate(currentDate);
 	    p.setReturnDate();
 	    p.setCheckedBool(true);
 	    e.addBookToList(p.getBarcode());
-
+        Periodical temp = Periodical(p);
 	    removeArchivedPeriodical(p);
-	    CirculatePeriodical(p);
         p.empQueue.pop();
         p.empQueue.push(e);
     }
     else
     {
+        if (p.empQueue.size() == 1)
+        {
+            //we are going to endlessly loop otherwise.
+            p.empQueue.pop();
+            return;
+        }
         p.empQueue.pop();
         p.empQueue.push(e);
         checkoutPeriodical(p, p.empQueue.top(), currentDate);
     }
+
 }
 
 void Library::ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2, Date currentDate)
@@ -83,7 +89,7 @@ void Library::ReadPeriodicalsFromFile()
 			String_Tokenizer st(line, ",");
 			aName = trim(st.next_token());
 			aBarCode = stoi(trim(st.next_token()));
-			archivedPeriodicals[aBarCode] = Periodical(aName, aBarCode);
+            archivedPeriodicals[aBarCode] = Periodical(aName, aBarCode);
 		}
 	}
 	fin.close();
@@ -105,7 +111,7 @@ void Library::ReadEmployeesFromFile()
 			theWaitingTime = stoi(trim(st.next_token()));
 			startVacation = trim(st.next_token());
 			endVacation = trim(st.next_token());
-			employees[empName] = Employee(theReliability, empName, Date(startVacation), Date(endVacation), theWaitingTime);
+			employees[empName] = Employee(theReliability, empName, Date(startVacation, DateFormat::US), Date(endVacation, DateFormat::US), theWaitingTime);
 		}
 	}
 	fin.close();
@@ -122,7 +128,9 @@ void Library::ReadActionsFromFile() // Evan
 
 		getline(fin, currentDate);
 
-		while (getline(fin, line) && !line.empty())
+		while (getline(fin, line)) 
+            if (!line.empty())
+            {
 		{
 			String_Tokenizer st(line, ",");
 
@@ -151,13 +159,21 @@ void Library::ReadActionsFromFile() // Evan
 			}
 		}
 	}
+    }
 }
 
 void Library::buildPriorityQueues(){
-	//Brenton
-	for (map<int, Periodical>::iterator itr = circulatingPeriodicals.begin(); itr != circulatingPeriodicals.end(); itr++){
+	//Brenton -- Jordan switched queue to archived.
+    if (!circulatingPeriodicals.empty())
+    {
+        throw exception ("There are still items in the circulating periodical map.");
+    }
+    for (map<int, Periodical>::iterator itr = archivedPeriodicals.begin(); itr != archivedPeriodicals.end(); itr++){
 		itr->second.generateEmpQueue(employees);
+        CirculatePeriodical(itr->second);
+        cout << "building priority queue for\t" << itr->second.getName() << endl;
 	}
+   
 }
 
 void Library::ArchivePeriodical(Periodical& p) // Evan
@@ -168,7 +184,10 @@ void Library::ArchivePeriodical(Periodical& p) // Evan
 
 void Library::removeArchivedPeriodical(Periodical& p) // Evan
 {
+    //Periodical temp = Periodical(p);
+    CirculatePeriodical(p);
 	archivedPeriodicals.erase(p.getBarcode());
+    
 }
 
 void Library::CirculatePeriodical(Periodical& p) // Evan
@@ -179,5 +198,8 @@ void Library::CirculatePeriodical(Periodical& p) // Evan
 
 void Library::removeCirculatingPeriodical(Periodical& p) // Evan
 {
-	circulatingPeriodicals.erase(p.getBarcode());
+    //Periodical temp = Periodical(p);
+	ArchivePeriodical(p);
+    circulatingPeriodicals.erase(p.getBarcode());
+    
 }
