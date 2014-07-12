@@ -16,7 +16,7 @@ public:
 	void ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2, Date currentDate);
     void ReadPeriodicalsFromFile();
 	void ReadEmployeesFromFile();
-	void ReadActionsFromFile();
+	Date ReadActionsFromFile();
 	void buildPriorityQueues();
     void ArchivePeriodical(Periodical& p);
 	void removeArchivedPeriodical(Periodical& p);

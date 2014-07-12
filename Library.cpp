@@ -38,6 +38,7 @@ void Library::ReadPeriodicalsFromFile()
 		string line, aName;
 		int aBarCode;
 		
+
 		while (getline(fin, line))
 		{
 			String_Tokenizer st(line, ",");
@@ -56,9 +57,10 @@ void Library::ReadEmployeesFromFile()
 	{
 		string line, empName, startVacation, endVacation;
 		int theReliability, theWaitingTime;
-		String_Tokenizer st(line, ",");
+		
 		while (getline(fin, line))
 		{
+			String_Tokenizer st(line, ",");
 			empName = trim(st.next_token());
 			theReliability = stoi(trim(st.next_token()));
 			theWaitingTime = stoi(trim(st.next_token()));
@@ -69,19 +71,31 @@ void Library::ReadEmployeesFromFile()
 	}
 	fin.close();
 }
-
-void Library::ReadActionsFromFile() // Evan
+// Returns Date of next batch of actions
+// if end of file has been reached return empty Date
+Date Library::ReadActionsFromFile() // Evan
 {
 	ifstream fin("Actions.txt");
 	if (fin)
 	{ 
-		string line, empName1, empName2;
+		string line, empName1,  currentDate, test;
 		int aBarcode, action;
-		String_Tokenizer st(line, ",");
-		Date currentDate = trim(st.next_token());
+
 		while (getline(fin, line))
 		{
-			empName1 = trim(st.next_token());
+			String_Tokenizer st(line, ",");
+			test = trim(st.next_token());
+			// determine if what was read in was a name or a date
+			if (test.find("/"))
+			{
+				currentDate = test;
+				getline(fin, line);
+				empName1 = trim(st.next_token());
+			}
+				
+			else
+				empName1 = test;
+
 			action = stoi(trim(st.next_token()));
 			aBarcode = stoi(trim(st.next_token()));
 
@@ -93,9 +107,12 @@ void Library::ReadActionsFromFile() // Evan
 			case 2: // return periodical
 				ReturnToLibrary(circulatingPeriodicals[aBarcode], employees[empName1], currentDate);
 				break;
-			case 3: // give periodical to 
+			case 3: // give periodical to another employee
+			{
+				string empName2;
 				empName2 = trim(st.next_token());
 				ExchangePeriodical(circulatingPeriodicals[aBarcode], employees[empName1], employees[empName2], currentDate);
+			}
 				break;
 			default:
 				throw::exception("Invalid action call from file");
