@@ -6,12 +6,28 @@
 using namespace std;
 
 void Library::ReturnToLibrary(Periodical& p, Employee& e, Date currentDate)
-{
-
+{//Jordan
+    p.setCheckedBool(false);
+    e.removeBookFromList(p.getBarcode());
+    if (currentDate > p.getReturnDate())
+    {
+        e.setReliability(e.getReliability() - ((currentDate - p.getReturnDate())/7));
+        if (e.getReliability() < 0) {
+            e.setReliability(0); 
+        }
+    }
+    else
+    {
+        e.setReliability(e.getReliability()+1);
+        if (e.getReliability() > 10)
+        {
+            e.setReliability(10);
+        }
+    }
 }
 
 void Library::checkoutPeriodical(Periodical& p, Employee& e, Date currentDate) // Evan
-{
+{//Jordan finished
 	if (p.getCheckOutStatus() == true)
 		throw::exception("the periodical you want is currently checked out");
 
@@ -25,12 +41,15 @@ void Library::checkoutPeriodical(Periodical& p, Employee& e, Date currentDate) /
 }
 
 void Library::ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2, Date currentDate)
-{
-
+{//Jordan
+    e1.removeBookFromList(p.getBarcode());
+    e2.addBookToList(p.getBarcode());
+    //remove e1 from periodical's employee queue
+    p.empQueue.pop();
 }
 
 void Library::ReadPeriodicalsFromFile()
-{
+{//Evan w/ Brenton debug
 	
 	ifstream fin("Periodicals.txt");
 	if (fin)
@@ -51,7 +70,7 @@ void Library::ReadPeriodicalsFromFile()
 }
 
 void Library::ReadEmployeesFromFile()
-{
+{//Evan w/ Brenton debug
 	ifstream fin("Employees.txt");
 	if (fin)
 	{
@@ -124,7 +143,7 @@ Date Library::ReadActionsFromFile() // Evan
 }
 
 void Library::buildPriorityQueues(){
-
+    //Brenton
 	for (map<int, Periodical>::iterator itr = circulatingPeriodicals.begin(); itr != circulatingPeriodicals.end(); itr++){
 		itr->second.generateEmpQueue(employees);
 	}

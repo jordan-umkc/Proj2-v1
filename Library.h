@@ -9,7 +9,7 @@ Library class header
 #include <map>
 #include <vector>
 
-class Library {
+class Library { //implemented by Jordan
 public:
     void ReturnToLibrary(Periodical& p, Employee& e, Date currentDate);
 	void checkoutPeriodical(Periodical& p, Employee& e, Date currentDate);
@@ -22,11 +22,14 @@ public:
 	void removeArchivedPeriodical(Periodical& p);
 	void CirculatePeriodical(Periodical& p);
 	void removeCirculatingPeriodical(Periodical& p);
+
 	
 private:
     map<int,Periodical> archivedPeriodicals;
     map<int,Periodical> circulatingPeriodicals;
 	map<string,Employee> employees;
+    
+
 };
 
 #endif

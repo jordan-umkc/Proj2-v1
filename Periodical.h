@@ -9,7 +9,7 @@ Periodical class header
 #include "Date.h"
 #include "Employee.h"
 
-class Periodical {
+class Periodical { //implemented by Jordan
 public:
     //default constructor
 	Periodical() : isCheckedOut(false), name(""), barcode(), checkOutDate(Date()), returnDate(Date()), maxCheckoutDuration(7) {}
@@ -41,24 +41,30 @@ public:
     void setMaxCheckoutDur(int& dur) {maxCheckoutDuration = dur;}
 
     //getters
-    Date getCheckedOutDate() const {return checkOutDate;}
-    Date getReturnedDate() const {return returnDate;}
+    Date getCheckOutDate() const {return checkOutDate;}
+    Date getReturnDate() const {return returnDate;}
     string getName() const {return name;}
 	bool getCheckOutStatus() { return isCheckedOut; }
     int getBarcode() const {return barcode;}
 
-	void generateEmpQueue(map<string,Employee>&);
+    
 
-	struct EmployeeComparer{
+	struct EmployeeComparer{ //Brenton
 		bool operator()(const Employee& emp1, const Employee& emp2){
 			int emp1priority = emp1.getReliability() + emp1.getWaitingTime();
 			int emp2priority = emp2.getReliability() + emp2.getWaitingTime();
 			return emp1priority < emp2priority;
 		}
 	};
+
+    priority_queue<Employee,vector<Employee>,EmployeeComparer> empQueue;
+	void generateEmpQueue(map<string,Employee>&)
+    {
+
+    }
+
     
 private:
-	priority_queue<Employee,vector<Employee>,EmployeeComparer> empQueue;
 	string name;
     int barcode;
     bool isCheckedOut;

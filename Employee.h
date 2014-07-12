@@ -11,7 +11,7 @@ Employee class header
 #include "Date.h"
 using namespace std;
 
-class Employee {
+class Employee { //implemented by Jordan
 public:
     //default constructor
     Employee(): reliability(), empname(), vacationStart(Date()), vacationEnd(Date()), waiting_time() {}
@@ -36,6 +36,19 @@ public:
     void setVacationEnd(const Date& d) {vacationEnd = d;}
     void setWaitingTime(const int& t) {waiting_time = t;}
     void addBookToList(const int& b) {BookListByID.push_back(b);}
+    void removeBookFromList(const int& b)
+    {
+        vector<int>::iterator iter;
+        for (iter = BookListByID.begin(); iter != BookListByID.end(); iter ++)
+        {
+            if (*iter == b)
+            {
+                BookListByID.erase(iter);
+                return;
+            }
+        }
+        throw::exception ("The periodical is not in this employees periodical list.\n");
+    }
 
     //getters
     Date getVacationStart() const {return vacationStart;}
