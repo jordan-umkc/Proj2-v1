@@ -40,12 +40,12 @@ void Library::UpdateEmployeeReliability(Employee& e, Periodical& p, Date& curren
 
 void Library::checkoutPeriodical(Periodical& p, Employee& e, Date currentDate) // Jordan
 {
-	if (p.getCheckOutStatus() == true)
+	if (p.getCheckOutStatus())
 	{
 		p.empQueue.push(e);
 		return;
 	}
-	map<int,Employee> popMap = UpdateQueue(p, currentDate);
+    map<int,Employee> popMap = FindEmployeeNotOnVacation(p, currentDate);
     if (!popMap.empty())
     {
         p.empQueue.top().addBookToList(p.getBarcode());
@@ -93,7 +93,7 @@ void Library::ExchangePeriodical(Periodical& p, Employee& e1, Date currentDate)
 {//Jordan
 	e1.removeBookFromList(p.getBarcode());
     UpdateEmployeeReliability(e1, p, currentDate);
-	map<int,Employee> popMap = UpdateQueue(p, currentDate);
+    map<int,Employee> popMap = FindEmployeeNotOnVacation(p, currentDate);
     if (!popMap.empty())
     {
         p.empQueue.top().addBookToList(p.getBarcode());
@@ -108,12 +108,12 @@ void Library::ExchangePeriodical(Periodical& p, Employee& e1, Date currentDate)
 }
 
 //returns a map of the pops required until we find an employee NOT on vacation
-map <int,Employee> Library::UpdateQueue(Periodical& p, Date currentDate)
+map <int,Employee> Library::FindEmployeeNotOnVacation(Periodical& p, Date currentDate)
 {//Jordan
     //checks if emp at top of queue is not on vacation. if he/she is on vacation we check the rest of the list
-    bool checkDate = (currentDate <= p.empQueue.top().getVacationEnd() || currentDate >= p.empQueue.top().getVacationEnd());
+    bool dateGood = (currentDate <= p.empQueue.top().getVacationEnd() || currentDate >= p.empQueue.top().getVacationEnd());
     map <int,Employee> popMap;
-    if (checkDate)
+    if (dateGood)
     {
         //employee is not on vacation. keep at top of queue
         return popMap;
@@ -122,7 +122,7 @@ map <int,Employee> Library::UpdateQueue(Periodical& p, Date currentDate)
     {
         
         int numPops = 0;
-        while (!p.empQueue.empty() && !checkDate)
+        while (!p.empQueue.empty() && !dateGood)
         {
             popMap[numPops] = p.empQueue.top();
             p.empQueue.pop(); 
