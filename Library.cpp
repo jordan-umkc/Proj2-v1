@@ -10,6 +10,12 @@ void Library::ReturnToLibrary(Periodical& p, Employee& e, Date currentDate)
 	p.setCheckedBool(false);
 	e.removeBookFromList(p.getBarcode());
     UpdateEmployeeReliability(e, p, currentDate);
+
+	if (!p.empQueue.empty())
+	{
+		checkoutPeriodical(p, p.empQueue.top(), currentDate);
+	}
+
 }
 
 void Library::UpdateEmployeeReliability(Employee& e, Periodical& p, Date& currentDate)
@@ -31,38 +37,46 @@ void Library::UpdateEmployeeReliability(Employee& e, Periodical& p, Date& curren
 	}
 }
 
-void Library::checkoutPeriodical(Periodical& p, Employee& e, Date currentDate) // Evan
-{//Jordan converted to if/else queue handling
+void Library::checkoutPeriodical(Periodical& p, Employee& e, Date currentDate) // Evan and Jordan
+{
+	if (p.getCheckOutStatus() == true)
+	{
+		p.empQueue.push(e);
+		return;
+	}
+	if (currentDate > e.getVacationEnd() || currentDate < e.getVacationStart())
+	{
+		p.empQueue.push(e);
+		return;
+	}
+	p.setCheckOutDate(currentDate);
+	p.setReturnDate();
+	p.setCheckedBool(true);
+	e.addBookToList(p.getBarcode());
+	removeArchivedPeriodical(p);
+	CirculatePeriodical(p);
+
+
+	/*
 	if (p.getCheckOutStatus() == true)
 		throw::exception("the periodical you want is currently checked out");
     if (p.empQueue.empty())
     {
-        return;
+		if (currentDate > e.getVacationEnd() || currentDate < e.getVacationStart())
+		{
+			p.setCheckOutDate(currentDate);
+			p.setReturnDate();
+			p.setCheckedBool(true);
+			e.addBookToList(p.getBarcode());
+			Periodical temp = Periodical(p);
+			removeArchivedPeriodical(p);
+		}
+		else
+		{
+			p.empQueue.push(e);
+		}
     }
-    if (currentDate > e.getVacationEnd() || currentDate < e.getVacationStart())
-    {
-	    p.setCheckOutDate(currentDate);
-	    p.setReturnDate();
-	    p.setCheckedBool(true);
-	    e.addBookToList(p.getBarcode());
-        Periodical temp = Periodical(p);
-	    removeArchivedPeriodical(p);
-        p.empQueue.pop();
-        p.empQueue.push(e);
-    }
-    else
-    {
-        if (p.empQueue.size() == 1)
-        {
-            //we are going to endlessly loop otherwise.
-            p.empQueue.pop();
-            return;
-        }
-        p.empQueue.pop();
-        p.empQueue.push(e);
-        checkoutPeriodical(p, p.empQueue.top(), currentDate);
-    }
-
+	*/
 }
 
 void Library::ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2, Date currentDate)
@@ -168,7 +182,7 @@ void Library::buildPriorityQueues(){
     {
         throw exception ("There are still items in the circulating periodical map.");
     }
-    for (map<int, Periodical>::iterator itr = archivedPeriodicals.begin(); itr != archivedPeriodicals.end(); itr++){
+	for (map<int, Periodical>::iterator itr = circulatingPeriodicals.begin(); itr != circulatingPeriodicals.end(); itr++){
 		itr->second.generateEmpQueue(employees);
         CirculatePeriodical(itr->second);
         cout << "building priority queue for\t" << itr->second.getName() << endl;
@@ -184,10 +198,7 @@ void Library::ArchivePeriodical(Periodical& p) // Evan
 
 void Library::removeArchivedPeriodical(Periodical& p) // Evan
 {
-    //Periodical temp = Periodical(p);
-    CirculatePeriodical(p);
 	archivedPeriodicals.erase(p.getBarcode());
-    
 }
 
 void Library::CirculatePeriodical(Periodical& p) // Evan
@@ -198,8 +209,5 @@ void Library::CirculatePeriodical(Periodical& p) // Evan
 
 void Library::removeCirculatingPeriodical(Periodical& p) // Evan
 {
-    //Periodical temp = Periodical(p);
-	ArchivePeriodical(p);
     circulatingPeriodicals.erase(p.getBarcode());
-    
 }

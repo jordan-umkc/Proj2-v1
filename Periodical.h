@@ -58,6 +58,7 @@ public:
 	};
 
 	priority_queue<Employee, vector<Employee>, EmployeeComparer> empQueue;
+
 	void Periodical::generateEmpQueue(map<string, Employee>& empMap)
 	{
 		for (map<string, Employee>::iterator itr = empMap.begin(); itr != empMap.end(); itr++){
