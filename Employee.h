@@ -37,7 +37,7 @@ public:
 	void setWaitingTime(const int& t) { waiting_time = t; }
 	void addBookToList(const int& b) { BookListByID.push_back(b); }
 	void removeBookFromList(const int& b)
-	{
+	{//Jordan
 		vector<int>::iterator iter;
 		for (iter = BookListByID.begin(); iter != BookListByID.end(); iter++)
 		{

@@ -45,11 +45,20 @@ void Library::checkoutPeriodical(Periodical& p, Employee& e, Date currentDate) /
 		p.empQueue.push(e);
 		return;
 	}
-	if (currentDate <= e.getVacationEnd() || currentDate >= e.getVacationStart())
-	{
-		p.empQueue.push(e);
-		return;
-	}
+	map<int,Employee> popMap = UpdateQueue(p, currentDate);
+    if (!popMap.empty())
+    {
+        p.empQueue.top().addBookToList(p.getBarcode());
+        int dayswaiting = currentDate - p.getReturnDate();
+        p.empQueue.top().setWaitingTime(p.empQueue.top().getWaitingTime() + dayswaiting);
+        p.empQueue.pop();
+        for (int i = 0; i < popMap.size(); i ++)
+        {
+            p.empQueue.push(popMap.begin()->second);
+            popMap.erase(popMap.begin());
+        }
+        return;
+    }
 	p.setCheckOutDate(currentDate);
 	p.setReturnDate();
 	p.setCheckedBool(true);
@@ -198,8 +207,7 @@ void Library::ReadActionsFromFile() // Evan
 
 			switch (action)
 			{
-			case 1: // checkout periodical
-				checkoutPeriodical(archivedPeriodicals[aBarcode], employees[empName1], currentDate);
+			case 1: // checking out a periodical?
 				break;
 			case 2: // return periodical
 				ReturnToLibrary(circulatingPeriodicals[aBarcode], employees[empName1], currentDate);
