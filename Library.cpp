@@ -80,13 +80,56 @@ void Library::checkoutPeriodical(Periodical& p, Employee& e, Date currentDate) /
 	*/
 }
 
-void Library::ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2, Date currentDate)
+void Library::ExchangePeriodical(Periodical& p, Employee& e1, Date currentDate)
 {//Jordan
 	e1.removeBookFromList(p.getBarcode());
-	e2.addBookToList(p.getBarcode());
-	//remove e1 from periodical's employee queue
-	p.empQueue.pop();
     UpdateEmployeeReliability(e1, p, currentDate);
+	map<int,Employee> popMap = UpdateQueue(p, currentDate);
+    if (!popMap.empty())
+    {
+        p.empQueue.top().addBookToList(p.getBarcode());
+        p.empQueue.pop();
+        for (int i = 0; i < popMap.size(); i ++)
+        {
+            p.empQueue.push(popMap.begin()->second);
+            popMap.erase(popMap.begin());
+        }
+        return;
+    }
+}
+
+//returns a map of the pops required until we find an employee NOT on vacation
+map <int,Employee> Library::UpdateQueue(Periodical& p, Date currentDate)
+{//Jordan
+    //checks if emp at top of queue is not on vacation. if he/she is on vacation we check the rest of the list
+    bool checkDate = (currentDate <= p.empQueue.top().getVacationEnd() || currentDate >= p.empQueue.top().getVacationEnd());
+    map <int,Employee> popMap;
+    if (checkDate)
+    {
+        //employee is not on vacation. keep at top of queue
+        return popMap;
+    }
+    else
+    {
+        
+        int numPops = 0;
+        while (!p.empQueue.empty() && !checkDate)
+        {
+            popMap[numPops] = p.empQueue.top();
+            p.empQueue.pop(); 
+            if (p.empQueue.empty())
+            {
+                //all employees in queue are on vacation. we will return to archive now
+                ArchivePeriodical(p);
+                removeCirculatingPeriodical(p);
+                popMap.clear();
+                return popMap;
+            }
+            numPops++;
+        }
+        //returns map of items popped. item at top of queue is item to be affected (not on vacation)
+        return popMap;
+    }
 }
 
 void Library::ReadPeriodicalsFromFile()
@@ -165,7 +208,7 @@ void Library::ReadActionsFromFile() // Evan
 			{
 				string empName2;
 				empName2 = trim(st.next_token());
-				ExchangePeriodical(circulatingPeriodicals[aBarcode], employees[empName1], employees[empName2], currentDate);
+				ExchangePeriodical(circulatingPeriodicals[aBarcode], employees[empName1], currentDate);
 			}
 				break;
 			default:

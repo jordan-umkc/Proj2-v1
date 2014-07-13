@@ -51,9 +51,12 @@ public:
 
 	struct EmployeeComparer{ //Brenton
 		bool operator()(const Employee& emp1, const Employee& emp2){
-			int emp1priority = emp1.getReliability() + emp1.getWaitingTime();
-			int emp2priority = emp2.getReliability() + emp2.getWaitingTime();
-			return emp1priority < emp2priority;
+            //NB! higher reliability is actually a lower reliability. 0 is highest reliability
+            //so we want the higher priority items to be placed in the rear of the line
+            //because they are actually LESS reliable -Jordan, per Prof. Kuhail e-mail
+			int emp1priority = emp1.getReliability() - emp1.getWaitingTime();
+			int emp2priority = emp2.getReliability() - emp2.getWaitingTime();
+			return emp1priority > emp2priority;
 		}
 	};
 

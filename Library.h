@@ -13,7 +13,7 @@ class Library { //implemented by Jordan
 public:
 	void ReturnToLibrary(Periodical& p, Employee& e, Date currentDate);
 	void checkoutPeriodical(Periodical& p, Employee& e, Date currentDate);
-	void ExchangePeriodical(Periodical& p, Employee& e1, Employee& e2, Date currentDate);
+	void ExchangePeriodical(Periodical& p, Employee& e1, Date currentDate);
 	void ReadPeriodicalsFromFile();
 	void ReadEmployeesFromFile();
 	void ReadActionsFromFile();
@@ -21,7 +21,9 @@ public:
 	void ArchivePeriodical(Periodical& p);
 	void removeArchivedPeriodical(Periodical& p);
 	void CirculatePeriodical(Periodical& p);
+
 	void removeCirculatingPeriodical(Periodical& p);
+    map <int,Employee> UpdateQueue(Periodical& p, Date currentDate);
     void UpdateEmployeeReliability(Employee& e, Periodical& p, Date& currentDate);
 
 
