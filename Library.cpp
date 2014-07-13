@@ -15,6 +15,10 @@ void Library::ReturnToLibrary(Periodical& p, Employee& e, Date currentDate)
 	{
 		checkoutPeriodical(p, p.empQueue.top(), currentDate);
 	}
+    else
+    {
+        ArchivePeriodical(p);
+    }
 
 }
 
@@ -22,29 +26,26 @@ void Library::UpdateEmployeeReliability(Employee& e, Periodical& p, Date& curren
 {//Jordan
     if (currentDate > p.getReturnDate())
 	{
-		e.setReliability(e.getReliability() - ((currentDate - p.getReturnDate()) / 7));
-		if (e.getReliability() < 0) {
-			e.setReliability(0);
-		}
+		e.setReliability(e.getReliability() + (currentDate - p.getReturnDate()));
 	}
 	else
 	{
-		e.setReliability(e.getReliability() + 1);
-		if (e.getReliability() > 10)
-		{
-			e.setReliability(10);
-		}
+		e.setReliability(e.getReliability() - (currentDate - p.getReturnDate()));
+        if (e.getReliability() < 0)
+        {
+            e.setReliability(0);
+        }
 	}
 }
 
-void Library::checkoutPeriodical(Periodical& p, Employee& e, Date currentDate) // Evan and Jordan
+void Library::checkoutPeriodical(Periodical& p, Employee& e, Date currentDate) // Jordan
 {
 	if (p.getCheckOutStatus() == true)
 	{
 		p.empQueue.push(e);
 		return;
 	}
-	if (currentDate > e.getVacationEnd() || currentDate < e.getVacationStart())
+	if (currentDate <= e.getVacationEnd() || currentDate >= e.getVacationStart())
 	{
 		p.empQueue.push(e);
 		return;
@@ -177,7 +178,7 @@ void Library::ReadActionsFromFile() // Evan
 }
 
 void Library::buildPriorityQueues(){
-	//Brenton -- Jordan switched queue to archived.
+	//Brenton
     if (!circulatingPeriodicals.empty())
     {
         throw exception ("There are still items in the circulating periodical map.");
